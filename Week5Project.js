@@ -3,28 +3,12 @@ class Dessert {
         this.name = name;
         this.type = type;
     }
-    
-    describe(){
-        return`${this.name} is ${this.type}.`
-    }
 }
 
 class DessertMenu {
     constructor(name){
         this.name = name;
         this.desserts = [];
-    }
-
-    addDessert(dessert){
-        if (dessert instanceof Dessert){
-        this.desserts.push(dessert);
-        }   else {
-        throw new Error(`You can only add an instance of Dessert. Argument is not a dessert: ${dessert}`);
-        }
-}
-
-    describe(){
-    return `${this.type} has ${this.desserts.length} desserts.`;   
     }
 }
 
@@ -34,8 +18,8 @@ class Menu {
         this.selectedDessertType = null;
     }
 
-    start(){
-        let selection = this.showMainMenuOptions();
+    begin(){
+        let selection = this.showDessertMenuOptions();
 
         while (selection != 0){
             switch(selection){
@@ -54,26 +38,27 @@ class Menu {
                 default:
                     selection = 0;
             }
-            selection = this.showMainMenuOptions();
+            selection = this.showDessertMenuOptions();
         }
-        alert("Maybe Next Time.");
+        alert("Come back, we have dessert!");
     }
 
-    showMainMenuOptions(){
+    showDessertMenuOptions(){
         return prompt(`
-        0) exit
-        1) create new dessert name
-        2) view dessert name
-        3) delete dessert name
-        4) display all dessert name
+        0) Exit Dessert Menu Creator
+        1) Create new dessert for menu
+        2) View, describe, and assign type for new dessert
+        3) Delete dessert name
+        4) Display all dessert names
+        
         `);
     }
 
-    showMenuOptions(dessertTypeInfo){
+    showDescriptionOptions(dessertTypeInfo){
         return prompt(`
-        0) back
-        1) create dessert
-        2) delete dessert
+        1) Describe dessert
+        2) Delete dessert description
+        3) Return to Dessert Main Menu
        --------------------- 
         ${dessertTypeInfo}
         `);
@@ -103,7 +88,7 @@ class Menu {
                 + " - " + this.selectedDessertType.desserts[i].type + "\n"
             }
 
-            let selection = this.showMenuOptions(description);
+            let selection = this.showDescriptionOptions(description);
             switch(selection){
                 case "1":
                 this.createDessertType();
@@ -122,13 +107,13 @@ class Menu {
     }
 
     createDessertType(){
-        let name = prompt("Enter name for the new dessert");
-        let type = prompt("Enter type for new dessert:");
-        this.selectedDessertType.desserts.push(new Dessert(name, type));
+        let name = prompt("Enter a description for your new dessert");
+        let type = prompt("Categorize your new dessert (pie, cake, etc.):");
+        this.selectedDessertType.desserts.push(new Dessert(`This brand new dessert is ${name}`, `and is an great example of a ${type}.`));
     }
 
     deleteDessertType(){
-        let index = prompt("Enter the index of the dessert you wish to delete:");
+        let index = prompt("Enter the index of the dessert you would like removed from the menu:");
         if(index > -1 && index< this.selectedDessertType.desserts.length){
             this.selectedDessertType.desserts.splice(index, 1);
         }
@@ -136,4 +121,4 @@ class Menu {
 }
 
 let menu = new Menu();
-menu.start();
+menu.begin();
